@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
-    internal class TestSegment : ISegment<TestPoint>
+    internal class TestSegment : IEdge<TestPoint>
     {
         public TestSegment(TestPoint pointA, TestPoint pointB)
         {
@@ -14,7 +14,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         public TestPoint PointA { get; }
         public TestPoint PointB { get; }
 
-        public int CompareTo(ISegment<TestPoint> other)
+        public int CompareTo(IEdge<TestPoint> other)
         {
             throw new System.NotImplementedException();
         }

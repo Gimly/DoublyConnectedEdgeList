@@ -2,8 +2,7 @@ using System;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    public interface ISegment<TPoint> : IComparable<ISegment<TPoint>>
-        where TPoint : IComparable<TPoint>, IEquatable<TPoint>
+    public interface IEdge<TPoint> where TPoint : IEquatable<TPoint>
     {
         TPoint PointA { get; }
 
