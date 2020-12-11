@@ -12,11 +12,12 @@ namespace Ethereality.DoublyConnectedEdgeList
         }
 
         public TPoint OriginalPoint { get; }
-        public HalfEdge<TEdge, TPoint>? IncidentEdge { get; private set; }
 
-        internal void SetIncidentEdge(HalfEdge<TEdge, TPoint> incidentEdge)
+        public HalfEdge<TEdge, TPoint>? Leaving { get; private set; }
+
+        internal void SetIncidentEdge(HalfEdge<TEdge, TPoint> leaving)
         {
-            IncidentEdge = incidentEdge ?? throw new ArgumentNullException(nameof(incidentEdge));
+            Leaving = leaving ?? throw new ArgumentNullException(nameof(leaving));
         }
     }
 }

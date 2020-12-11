@@ -6,20 +6,19 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public HalfEdge(TEdge segment, Vertex<TEdge, TPoint> origin, HalfEdge<TEdge, TPoint>? twin = null)
+        public HalfEdge(TEdge segment, Vertex<TEdge, TPoint> origin)
         {
             OriginalSegment = segment ?? throw new ArgumentNullException(nameof(segment));
             Origin = origin ?? throw new ArgumentNullException(nameof(origin));
-            Twin = twin;
         }
 
         public TEdge OriginalSegment { get; }
+        
         public Vertex<TEdge, TPoint> Origin { get; }
+        
         public HalfEdge<TEdge, TPoint>? Twin { get; set; }
 
-        internal void SetTwin(HalfEdge<TEdge, TPoint> twin)
-        {
-            Twin = twin ?? throw new ArgumentNullException(nameof(twin));
-        }
+        public HalfEdge<TEdge, TPoint>? Next { get; set; }
+        public HalfEdge<TEdge, TPoint> Previous { get; set; }
     }
 }

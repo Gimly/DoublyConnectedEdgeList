@@ -26,11 +26,11 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
                  new TestSegment(b, c),
                   new TestSegment(c, a)};
 
-            var dcel = Dcel.FromShape<TestSegment, TestPoint>(triangle);
+            var dcel = Dcel.FromShape<TestSegment, TestPoint>(triangle, new TestSegmentComparer());
 
             dcel.Vertices.Should().HaveCount(3);
             dcel.Vertices.Select(v => v.OriginalPoint).Should().BeEquivalentTo(new[] { a, b, c });
-            dcel.Vertices.All(v => v.IncidentEdge is not null).Should().BeTrue();
+            dcel.Vertices.All(v => v.Leaving is not null).Should().BeTrue();
 
             dcel.HalfEdges.Should().HaveCount(6);
             dcel.HalfEdges.All(halfEdge => halfEdge.Origin is not null).Should().BeTrue();
