@@ -24,10 +24,7 @@ namespace Ethereality.DoublyConnectedEdgeList
             {
                 var pointAVertex = verticesDictionary[segment.PointA];
                 var firstHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointAVertex);
-                if (pointAVertex.Leaving is null)
-                {
-                    pointAVertex.SetIncidentEdge(firstHalfEdge);
-                }
+                pointAVertex.HalfEdges.Add(firstHalfEdge);
 
                 var pointBVertex = verticesDictionary[segment.PointB];
                 var secondHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointBVertex)
@@ -35,12 +32,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                     Twin = firstHalfEdge
                 };
 
-                pointBVertex.SetIncidentEdge(secondHalfEdge);
-
-                if (pointBVertex.Leaving is null)
-                {
-                    pointBVertex.SetIncidentEdge(firstHalfEdge);
-                }
+                pointBVertex.HalfEdges.Add(secondHalfEdge);
 
                 firstHalfEdge.Twin = secondHalfEdge;
 
@@ -48,16 +40,11 @@ namespace Ethereality.DoublyConnectedEdgeList
                 halfEdges.Add(secondHalfEdge);
             }
 
-            var halfEdgesLookup =
-                verticesDictionary
-                    .Values
-                    .ToLookup(vertex => vertex, vertex => vertex.Leaving);
-
-            foreach (var vertex in halfEdgesLookup)
+            foreach (var vertex in verticesDictionary.Values)
             {
-                var halfEdgesList = vertex.OrderBy(he => he.OriginalSegment, coincidentEdgeComparer).ToList();
+                var halfEdgesList = vertex.HalfEdges.OrderBy(he => he.OriginalSegment, coincidentEdgeComparer).ToList();
 
-                for (int i = 0; i < halfEdgesList.Count - 2; i++)
+                for (int i = 0; i < halfEdgesList.Count - 1; i++)
                 {
                     var e1 = halfEdgesList[i];
                     var e2 = halfEdgesList[i + 1];
@@ -73,7 +60,30 @@ namespace Ethereality.DoublyConnectedEdgeList
                 he2.Previous = he1.Twin;
             }
 
-            return new Dcel<TEdge, TPoint>(verticesDictionary.Values, halfEdges);
+            var faces = new List<Face<TEdge, TPoint>>();
+            foreach (var halfEdge in halfEdges)
+            {
+                if (halfEdge.Face == null)
+                {
+                    var face = new Face<TEdge, TPoint>()
+                    {
+                        HalfEdge = halfEdge
+                    };
+
+                    var currentHalfEdge = halfEdge;
+
+                    while (currentHalfEdge.Next != halfEdge)
+                    {
+                        currentHalfEdge.Face = face;
+                        currentHalfEdge = currentHalfEdge.Next;
+                    }
+                    currentHalfEdge.Face = face;
+
+                    faces.Add(face);
+                }
+            }
+
+            return new Dcel<TEdge, TPoint>(verticesDictionary.Values, halfEdges, faces);
         }
     }
 }

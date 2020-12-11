@@ -12,11 +12,9 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         }
 
         public TestPoint PointA { get; }
+
         public TestPoint PointB { get; }
 
-        public int CompareTo(IEdge<TestPoint> other)
-        {
-            throw new System.NotImplementedException();
-        }
+        public override string ToString() => $"({PointA})->({PointB})";
     }
 }

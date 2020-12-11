@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
@@ -9,15 +10,13 @@ namespace Ethereality.DoublyConnectedEdgeList
         public Vertex(TPoint point)
         {
             OriginalPoint = point ?? throw new ArgumentNullException(nameof(point));
+            HalfEdges = new List<HalfEdge<TEdge, TPoint>>();
         }
 
         public TPoint OriginalPoint { get; }
 
-        public HalfEdge<TEdge, TPoint>? Leaving { get; private set; }
+        public List<HalfEdge<TEdge, TPoint>> HalfEdges { get; }
 
-        internal void SetIncidentEdge(HalfEdge<TEdge, TPoint> leaving)
-        {
-            Leaving = leaving ?? throw new ArgumentNullException(nameof(leaving));
-        }
+        public override string ToString() => $"Vertex: {OriginalPoint}";
     }
 }

@@ -17,10 +17,10 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         [Fact]
         public void Given_a_rectangle_triangle_Should_return_simple_topology()
         {
-            var a = new TestPoint(-1, 0);
-            var b = new TestPoint(0, 1);
-            var c = new TestPoint(1, 0);
-            
+            var a = new TestPoint(-1, 2);
+            var b = new TestPoint(4, 3);
+            var c = new TestPoint(5, -2);
+
             var triangle = new[] {
                 new TestSegment(a, b),
                  new TestSegment(b, c),
@@ -30,11 +30,19 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
             dcel.Vertices.Should().HaveCount(3);
             dcel.Vertices.Select(v => v.OriginalPoint).Should().BeEquivalentTo(new[] { a, b, c });
-            dcel.Vertices.All(v => v.Leaving is not null).Should().BeTrue();
+            foreach (var vertex in dcel.Vertices)
+            {
+                vertex.HalfEdges.Should().HaveCount(2);
+            }
 
             dcel.HalfEdges.Should().HaveCount(6);
             dcel.HalfEdges.All(halfEdge => halfEdge.Origin is not null).Should().BeTrue();
             dcel.HalfEdges.All(halfEdge => halfEdge.Twin is not null).Should().BeTrue();
+            dcel.HalfEdges.All(halfEdge => halfEdge.Previous is not null && halfEdge.Previous is not null).Should().BeTrue();
+
+            dcel.Faces.Should().HaveCount(2);
         }
+
+        
     }
 }

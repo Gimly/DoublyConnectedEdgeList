@@ -28,5 +28,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         }
 
         public override int GetHashCode() => HashCode.Combine(X, Y);
+
+        public override string ToString() => $"({X},{Y})";
     }
 }
