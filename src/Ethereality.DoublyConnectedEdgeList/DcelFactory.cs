@@ -12,7 +12,7 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public DcelFactory(IComparer<TEdge> coincidentEdgeComparer)
         {
-            _coincidentEdgeComparer = 
+            _coincidentEdgeComparer =
                 coincidentEdgeComparer ?? throw new ArgumentNullException(nameof(coincidentEdgeComparer));
         }
 
@@ -22,19 +22,19 @@ namespace Ethereality.DoublyConnectedEdgeList
                 edges.Select(s => s.PointA)
                      .Concat(edges.Select(s => s.PointB))
                      .Distinct()
-                     .Select(point => new Vertex<TEdge, TPoint>(point))
+                     .Select(point => new InternalVertex<TEdge, TPoint>(point))
                      .ToDictionary(value => value.OriginalPoint, value => value);
 
-            var halfEdges = new List<HalfEdge<TEdge, TPoint>>();
+            var halfEdges = new List<InternalHalfEdge<TEdge, TPoint>>();
 
             foreach (var segment in edges)
             {
                 var pointAVertex = verticesDictionary[segment.PointA];
-                var firstHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointAVertex);
+                var firstHalfEdge = new InternalHalfEdge<TEdge, TPoint>(segment, pointAVertex);
                 pointAVertex.HalfEdges.Add(firstHalfEdge);
 
                 var pointBVertex = verticesDictionary[segment.PointB];
-                var secondHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointBVertex)
+                var secondHalfEdge = new InternalHalfEdge<TEdge, TPoint>(segment, pointBVertex)
                 {
                     Twin = firstHalfEdge
                 };
@@ -73,12 +73,12 @@ namespace Ethereality.DoublyConnectedEdgeList
                 he2.Previous = he1.Twin;
             }
 
-            var faces = new List<Face<TEdge, TPoint>>();
+            var faces = new List<InternalFace<TEdge, TPoint>>();
             foreach (var halfEdge in halfEdges)
             {
                 if (halfEdge.Face == null)
                 {
-                    var face = new Face<TEdge, TPoint>()
+                    var face = new InternalFace<TEdge, TPoint>()
                     {
                         HalfEdge = halfEdge
                     };

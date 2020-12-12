@@ -6,6 +6,11 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public HalfEdge<TEdge, TPoint> HalfEdge { get; internal set; }
+        internal Face(InternalHalfEdge<TEdge, TPoint> halfEdge)
+        {
+            HalfEdge = halfEdge.ToHalfEdge();
+        }
+
+        public HalfEdge<TEdge, TPoint> HalfEdge { get; }
     }
 }

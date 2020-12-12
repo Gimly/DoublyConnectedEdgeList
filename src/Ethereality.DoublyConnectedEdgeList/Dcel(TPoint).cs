@@ -4,18 +4,26 @@ using System.Linq;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    public class Dcel<TEdge, TPoint> 
-        where TEdge: IEdge<TPoint>
-        where TPoint: IEquatable<TPoint>
+    public class Dcel<TEdge, TPoint>
+        where TEdge : IEdge<TPoint>
+        where TPoint : IEquatable<TPoint>
     {
         internal Dcel(
-            IEnumerable<Vertex<TEdge, TPoint>> vertices,
-            IEnumerable<HalfEdge<TEdge, TPoint>> halfEdges,
-            IEnumerable<Face<TEdge, TPoint>> faces)
+            IEnumerable<InternalVertex<TEdge, TPoint>> vertices,
+            IEnumerable<InternalHalfEdge<TEdge, TPoint>> halfEdges,
+            IEnumerable<InternalFace<TEdge, TPoint>> faces)
         {
-            Vertices = vertices?.ToList() ?? throw new ArgumentNullException(nameof(vertices));
-            HalfEdges = halfEdges?.ToList() ?? throw new ArgumentNullException(nameof(halfEdges));
-            Faces = faces?.ToList() ?? throw new ArgumentNullException(nameof(faces));
+            Vertices =
+                vertices?.Select(v => v.ToVertex()).ToList()
+                ?? throw new ArgumentNullException(nameof(vertices));
+
+            HalfEdges =
+                halfEdges?.Select(h => h.ToHalfEdge()).ToList()
+                ?? throw new ArgumentNullException(nameof(halfEdges));
+
+            Faces =
+                faces?.Select(f => f.ToFace()).ToList()
+                ?? throw new ArgumentNullException(nameof(faces));
         }
 
         public IReadOnlyList<Vertex<TEdge, TPoint>> Vertices { get; }
