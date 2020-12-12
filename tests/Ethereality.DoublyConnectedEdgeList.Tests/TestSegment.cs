@@ -1,6 +1,3 @@
-
-using System.Drawing;
-
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
     internal class TestSegment : IEdge<TestPoint>

@@ -62,12 +62,24 @@ namespace Ethereality.DoublyConnectedEdgeList
                     var e1 = halfEdgesList[i];
                     var e2 = halfEdgesList[i + 1];
 
+                    if (e1.Twin is null)
+                    {
+                        throw new InvalidOperationException(
+                            $"There was no twin attached to half edge {e1}.");
+                    }
+
                     e1.Twin.Next = e2;
                     e2.Previous = e1.Twin;
                 }
 
                 var he1 = halfEdgesList.Last();
                 var he2 = halfEdgesList.First();
+
+                if (he1.Twin is null)
+                {
+                    throw new InvalidOperationException(
+                        $"There was no twin attached to half edge {he1}.");
+                }
 
                 he1.Twin.Next = he2;
                 he2.Previous = he1.Twin;
@@ -88,6 +100,12 @@ namespace Ethereality.DoublyConnectedEdgeList
                     while (currentHalfEdge.Next != halfEdge)
                     {
                         currentHalfEdge.Face = face;
+
+                        if (currentHalfEdge.Next is null)
+                        {
+                            throw new InvalidOperationException(
+                                $"The half edge {currentHalfEdge} has a null next edge.");
+                        }
                         currentHalfEdge = currentHalfEdge.Next;
                     }
                     currentHalfEdge.Face = face;

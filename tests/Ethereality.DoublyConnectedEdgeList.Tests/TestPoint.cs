@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
@@ -30,5 +26,10 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         public override int GetHashCode() => HashCode.Combine(X, Y);
 
         public override string ToString() => $"({X},{Y})";
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as TestPoint);
+        }
     }
 }
