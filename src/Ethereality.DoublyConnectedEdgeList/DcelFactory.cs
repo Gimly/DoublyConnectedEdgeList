@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    public static class Dcel
+    public class DcelFactory<TEdge, TPoint>
+        where TEdge : IEdge<TPoint>
+        where TPoint : IEquatable<TPoint>
     {
-        public static Dcel<TEdge, TPoint> FromShape<TEdge, TPoint>(IEnumerable<TEdge> edges, IComparer<TEdge> coincidentEdgeComparer)
-            where TPoint : IEquatable<TPoint>
-            where TEdge : IEdge<TPoint>
+        private readonly IComparer<TEdge> _coincidentEdgeComparer;
+
+        public DcelFactory(IComparer<TEdge> coincidentEdgeComparer)
+        {
+            _coincidentEdgeComparer = 
+                coincidentEdgeComparer ?? throw new ArgumentNullException(nameof(coincidentEdgeComparer));
+        }
+
+        public Dcel<TEdge, TPoint> FromShape(IEnumerable<TEdge> edges)
         {
             var verticesDictionary =
                 edges.Select(s => s.PointA)
@@ -42,7 +49,13 @@ namespace Ethereality.DoublyConnectedEdgeList
 
             foreach (var vertex in verticesDictionary.Values)
             {
-                var halfEdgesList = vertex.HalfEdges.OrderBy(he => he.OriginalSegment, coincidentEdgeComparer).ToList();
+                var halfEdgesList =
+                    vertex
+                        .HalfEdges
+                        .OrderBy(
+                            he => he.OriginalSegment,
+                            _coincidentEdgeComparer)
+                        .ToList();
 
                 for (int i = 0; i < halfEdgesList.Count - 1; i++)
                 {

@@ -26,7 +26,8 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
                  new TestSegment(b, c),
                   new TestSegment(c, a)};
 
-            var dcel = Dcel.FromShape<TestSegment, TestPoint>(triangle, new TestSegmentComparer());
+            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+            var dcel = dcelFactory.FromShape(triangle);
 
             dcel.Vertices.Should().HaveCount(3);
             dcel.Vertices.Select(v => v.OriginalPoint).Should().BeEquivalentTo(new[] { a, b, c });
@@ -43,6 +44,31 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             dcel.Faces.Should().HaveCount(2);
         }
 
-        
+        [Fact]
+        public void Given_same_input_as_python_implementation_Should_return_same_output()
+        {
+            var points =
+                new[]
+                {
+                    new TestPoint(0, 5),
+                    new TestPoint(2, 5),
+                    new TestPoint(3, 0),
+                    new TestPoint(0, 0)
+                };
+
+            var shape =
+                new[]
+                {
+                    new TestSegment(points[0], points[1]),
+                    new TestSegment(points[1], points[2]),
+                    new TestSegment(points[2], points[3]),
+                    new TestSegment(points[3], points[0]),
+                    new TestSegment(points[0], points[2])
+                };
+
+            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+            var dcel = dcelFactory.FromShape(shape);
+            dcel.Vertices.Should().HaveCount(4);
+        }
     }
 }
