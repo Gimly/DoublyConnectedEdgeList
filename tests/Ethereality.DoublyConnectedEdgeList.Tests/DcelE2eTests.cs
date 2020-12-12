@@ -1,8 +1,6 @@
+using FluentAssertions;
 using System;
 using System.Linq;
-
-using FluentAssertions;
-
 using Xunit;
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
@@ -23,10 +21,12 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var b = new TestPoint(4, 3);
             var c = new TestPoint(5, -2);
 
-            var triangle = new[] {
+            var triangle = new[]
+            {
                 new TestSegment(a, b),
-                 new TestSegment(b, c),
-                  new TestSegment(c, a)};
+                new TestSegment(b, c),
+                new TestSegment(c, a)
+            };
 
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
             var dcel = dcelFactory.FromShape(triangle);
