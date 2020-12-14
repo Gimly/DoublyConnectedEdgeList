@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
@@ -6,6 +7,6 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public IHalfEdge<TEdge, TPoint> HalfEdge { get; }
+        public IEnumerable<IHalfEdge<TEdge, TPoint>> HalfEdges { get; }
     }
 }

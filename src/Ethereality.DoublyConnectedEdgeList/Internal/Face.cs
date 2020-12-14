@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
@@ -6,9 +7,14 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public HalfEdge<TEdge, TPoint>? HalfEdge { get; set; }
+        public Face()
+        {
+            HalfEdges = new List<HalfEdge<TEdge, TPoint>>();
+        }
 
-        IHalfEdge<TEdge, TPoint> IFace<TEdge, TPoint>.HalfEdge =>
-            HalfEdge ?? throw new InvalidOperationException("Half edge must be set.");
+        public List<HalfEdge<TEdge, TPoint>> HalfEdges { get; }
+
+        IEnumerable<IHalfEdge<TEdge, TPoint>> IFace<TEdge, TPoint>.HalfEdges =>
+            HalfEdges ?? throw new InvalidOperationException("Half edge must be set.");
     }
 }

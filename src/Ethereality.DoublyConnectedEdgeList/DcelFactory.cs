@@ -116,16 +116,14 @@ namespace Ethereality.DoublyConnectedEdgeList
             {
                 if (halfEdge.Face == null)
                 {
-                    var face = new Face<TEdge, TPoint>()
-                    {
-                        HalfEdge = halfEdge
-                    };
+                    var face = new Face<TEdge, TPoint>();
 
                     var currentHalfEdge = halfEdge;
 
                     while (currentHalfEdge.Next != halfEdge)
                     {
                         currentHalfEdge.Face = face;
+                        face.HalfEdges.Add(currentHalfEdge);
 
                         if (currentHalfEdge.Next is null)
                         {
@@ -135,6 +133,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                         currentHalfEdge = currentHalfEdge.Next;
                     }
                     currentHalfEdge.Face = face;
+                    face.HalfEdges.Add(currentHalfEdge);
 
                     faces.Add(face);
                 }
