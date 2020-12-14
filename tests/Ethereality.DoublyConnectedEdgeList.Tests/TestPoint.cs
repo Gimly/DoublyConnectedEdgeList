@@ -2,7 +2,7 @@
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
-    internal class TestPoint : IComparable<TestPoint>, IEquatable<TestPoint>
+    internal class TestPoint : IEquatable<TestPoint>
     {
         public TestPoint(double x, double y)
         {
@@ -12,11 +12,6 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
         public double X { get; }
         public double Y { get; }
-
-        public int CompareTo(TestPoint other)
-        {
-            throw new NotImplementedException();
-        }
 
         public bool Equals(TestPoint other)
         {

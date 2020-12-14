@@ -2,11 +2,11 @@
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    internal class InternalHalfEdge<TEdge, TPoint> : IHalfEdge<TEdge, TPoint>
+    internal class HalfEdge<TEdge, TPoint> : IHalfEdge<TEdge, TPoint>
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public InternalHalfEdge(TEdge segment, InternalVertex<TEdge, TPoint> origin)
+        public HalfEdge(TEdge segment, Vertex<TEdge, TPoint> origin)
         {
             OriginalSegment = segment ?? throw new ArgumentNullException(nameof(segment));
             Origin = origin ?? throw new ArgumentNullException(nameof(origin));
@@ -14,15 +14,15 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public TEdge OriginalSegment { get; }
 
-        public InternalVertex<TEdge, TPoint> Origin { get; }
+        public Vertex<TEdge, TPoint> Origin { get; }
 
-        public InternalHalfEdge<TEdge, TPoint>? Twin { get; set; }
+        public HalfEdge<TEdge, TPoint>? Twin { get; set; }
 
-        public InternalHalfEdge<TEdge, TPoint>? Next { get; set; }
+        public HalfEdge<TEdge, TPoint>? Next { get; set; }
 
-        public InternalHalfEdge<TEdge, TPoint>? Previous { get; set; }
+        public HalfEdge<TEdge, TPoint>? Previous { get; set; }
 
-        public InternalFace<TEdge, TPoint>? Face { get; set; }
+        public Face<TEdge, TPoint>? Face { get; set; }
 
         IVertex<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Origin => Origin;
 

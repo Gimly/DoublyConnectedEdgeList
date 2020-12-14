@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    internal class InternalVertex<TEdge, TPoint> : IVertex<TEdge, TPoint>
+    internal class Vertex<TEdge, TPoint> : IVertex<TEdge, TPoint>
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public InternalVertex(TPoint point)
+        public Vertex(TPoint point)
         {
             OriginalPoint = point ?? throw new ArgumentNullException(nameof(point));
             HalfEdges = new List<IHalfEdge<TEdge, TPoint>>();

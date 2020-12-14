@@ -10,7 +10,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         [Fact]
         public void When_calling_constructor_Given_null_vertices_Should_throw_ArgumentNullException()
         {
-            var action = new Action(() => _ = new InternalVertex<TestSegment, TestPoint>(null));
+            var action = new Action(() => _ = new Vertex<TestSegment, TestPoint>(null));
             action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("point");
         }
 
@@ -74,6 +74,14 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
             var firstHalfEdge = dcel.FindHalfEdge(points[2], points[0]);
             firstHalfEdge.Should().NotBeNull();
+
+            var secondHalfEdge = firstHalfEdge.Next;
+            secondHalfEdge.OriginalSegment.PointA.Should().Be(points[0]);
+            secondHalfEdge.OriginalSegment.PointB.Should().Be(points[3]);
+
+            var thirdHalfEdge = secondHalfEdge.Next;
+            thirdHalfEdge.OriginalSegment.PointA.Should().Be(points[3]);
+            thirdHalfEdge.OriginalSegment.PointB.Should().Be(points[0]);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Ethereality.DoublyConnectedEdgeList
             var verticesDictionary = CreateVertices(edges);
 
             var halfEdges = CreateHalfEdges(edges, verticesDictionary);
-            List<InternalFace<TEdge, TPoint>> faces = CreateFaces(halfEdges);
+            List<Face<TEdge, TPoint>> faces = CreateFaces(halfEdges);
 
             return new Dcel<TEdge, TPoint>(
                 verticesDictionary.Values.Cast<IVertex<TEdge, TPoint>>(),
@@ -27,27 +27,27 @@ namespace Ethereality.DoublyConnectedEdgeList
                 faces.Cast<IFace<TEdge, TPoint>>());
         }
 
-        private static Dictionary<TPoint, InternalVertex<TEdge, TPoint>> CreateVertices(IEnumerable<TEdge> edges) =>
+        private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IEnumerable<TEdge> edges) =>
             edges.Select(s => s.PointA)
                  .Concat(edges.Select(s => s.PointB))
                  .Distinct()
-                 .Select(point => new InternalVertex<TEdge, TPoint>(point))
+                 .Select(point => new Vertex<TEdge, TPoint>(point))
                  .ToDictionary(value => value.OriginalPoint, value => value);
 
-        private List<InternalHalfEdge<TEdge, TPoint>> CreateHalfEdges(
+        private List<HalfEdge<TEdge, TPoint>> CreateHalfEdges(
             IEnumerable<TEdge> edges,
-            Dictionary<TPoint, InternalVertex<TEdge, TPoint>> verticesDictionary)
+            Dictionary<TPoint, Vertex<TEdge, TPoint>> verticesDictionary)
         {
-            var halfEdges = new List<InternalHalfEdge<TEdge, TPoint>>();
+            var halfEdges = new List<HalfEdge<TEdge, TPoint>>();
 
             foreach (var segment in edges)
             {
                 var pointAVertex = verticesDictionary[segment.PointA];
-                var firstHalfEdge = new InternalHalfEdge<TEdge, TPoint>(segment, pointAVertex);
+                var firstHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointAVertex);
                 pointAVertex.HalfEdges.Add(firstHalfEdge);
 
                 var pointBVertex = verticesDictionary[segment.PointB];
-                var secondHalfEdge = new InternalHalfEdge<TEdge, TPoint>(segment, pointBVertex)
+                var secondHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointBVertex)
                 {
                     Twin = firstHalfEdge
                 };
@@ -65,14 +65,14 @@ namespace Ethereality.DoublyConnectedEdgeList
             return halfEdges;
         }
 
-        private void SetHalfEdgesValues(Dictionary<TPoint, InternalVertex<TEdge, TPoint>> verticesDictionary)
+        private void SetHalfEdgesValues(Dictionary<TPoint, Vertex<TEdge, TPoint>> verticesDictionary)
         {
             foreach (var vertex in verticesDictionary.Values)
             {
                 var halfEdgesList =
                     vertex
                         .HalfEdges
-                        .Cast<InternalHalfEdge<TEdge, TPoint>>()
+                        .Cast<HalfEdge<TEdge, TPoint>>()
                         .OrderBy(
                             he => he.OriginalSegment,
                             _coincidentEdgeComparer)
@@ -107,16 +107,16 @@ namespace Ethereality.DoublyConnectedEdgeList
             }
         }
 
-        private static List<InternalFace<TEdge, TPoint>> CreateFaces(
-            List<InternalHalfEdge<TEdge, TPoint>> halfEdges)
+        private static List<Face<TEdge, TPoint>> CreateFaces(
+            List<HalfEdge<TEdge, TPoint>> halfEdges)
         {
-            var faces = new List<InternalFace<TEdge, TPoint>>();
+            var faces = new List<Face<TEdge, TPoint>>();
 
             foreach (var halfEdge in halfEdges)
             {
                 if (halfEdge.Face == null)
                 {
-                    var face = new InternalFace<TEdge, TPoint>()
+                    var face = new Face<TEdge, TPoint>()
                     {
                         HalfEdge = halfEdge
                     };

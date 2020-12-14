@@ -9,7 +9,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         [Fact]
         public void When_constructing_Vertex_Given_null_point_Should_throw_ArgumentNullException()
         {
-            var action = new Action(() => _ = new InternalVertex<TestSegment, TestPoint>(null));
+            var action = new Action(() => _ = new Vertex<TestSegment, TestPoint>(null));
 
             action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("point");
         }
