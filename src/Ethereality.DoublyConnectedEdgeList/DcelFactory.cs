@@ -10,6 +10,15 @@ namespace Ethereality.DoublyConnectedEdgeList
     {
         private readonly IComparer<TEdge> _coincidentEdgeComparer;
 
+        private readonly IDictionary<InternalHalfEdge<TEdge, TPoint>, HalfEdge<TEdge, TPoint>> _createdHalfEdges =
+            new Dictionary<InternalHalfEdge<TEdge, TPoint>, HalfEdge<TEdge, TPoint>>();
+
+        private readonly IDictionary<InternalVertex<TEdge, TPoint>, Vertex<TEdge, TPoint>> _createdVertex =
+            new Dictionary<InternalVertex<TEdge, TPoint>, Vertex<TEdge, TPoint>>();
+
+        private readonly IDictionary<InternalFace<TEdge, TPoint>, Face<TEdge, TPoint>> _createdFaces =
+            new Dictionary<InternalFace<TEdge, TPoint>, Face<TEdge, TPoint>>();
+
         public DcelFactory(IComparer<TEdge> coincidentEdgeComparer) =>
             _coincidentEdgeComparer =
                 coincidentEdgeComparer ?? throw new ArgumentNullException(nameof(coincidentEdgeComparer));
@@ -21,7 +30,70 @@ namespace Ethereality.DoublyConnectedEdgeList
             var halfEdges = CreateHalfEdges(edges, verticesDictionary);
             List<InternalFace<TEdge, TPoint>> faces = CreateFaces(halfEdges);
 
-            return new Dcel<TEdge, TPoint>(verticesDictionary.Values, halfEdges, faces);
+            return new Dcel<TEdge, TPoint>(
+                verticesDictionary
+                    .Values
+                    .Select(v => ToVertex(v)),
+                halfEdges.Select(he => ToHalfEdge(he)), 
+                faces.Select(f => ToFace(f)));
+        }
+
+        private Vertex<TEdge, TPoint> ToVertex(InternalVertex<TEdge, TPoint> internalVertex)
+        {
+            if (_createdVertex.ContainsKey(internalVertex))
+            {
+                return _createdVertex[internalVertex];
+            }
+
+            var newVertex =  
+                new Vertex<TEdge, TPoint>(
+                    internalVertex.OriginalPoint,
+                    internalVertex.HalfEdges.Select(he => ToHalfEdge(he)));
+
+            _createdVertex.Add(internalVertex, newVertex);
+
+            return newVertex;
+        }
+
+        private HalfEdge<TEdge, TPoint> ToHalfEdge(InternalHalfEdge<TEdge, TPoint> internalHalfEdge)
+        {
+            if (_createdHalfEdges.ContainsKey(internalHalfEdge))
+            {
+                return _createdHalfEdges[internalHalfEdge];
+            }
+
+            var newHalfEdge =
+                new HalfEdge<TEdge, TPoint>(
+                    internalHalfEdge.OriginalSegment,
+                    ToVertex(internalHalfEdge.Origin),
+                    ToHalfEdge(internalHalfEdge.Twin ??
+                        throw new InvalidOperationException("Cannot create a half edge with null twin.")),
+                    ToHalfEdge(internalHalfEdge.Next ??
+                        throw new InvalidOperationException("Cannot create a half edge with null next.")),
+                    ToHalfEdge(internalHalfEdge.Previous ??
+                        throw new InvalidOperationException("Cannot create a half edge with null previous.")),
+                    ToFace(internalHalfEdge.Face ??
+                        throw new InvalidOperationException("Cannot create a half edge with null face.")));
+
+            _createdHalfEdges.Add(internalHalfEdge, newHalfEdge);
+
+            return newHalfEdge;
+        }
+
+        private Face<TEdge, TPoint> ToFace(InternalFace<TEdge, TPoint> internalFace)
+        {
+            if (_createdFaces.ContainsKey(internalFace))
+            {
+                return _createdFaces[internalFace];
+            }
+
+            var newFace = new Face<TEdge, TPoint>(
+                ToHalfEdge(internalFace.HalfEdge ??
+                    throw new InvalidOperationException("Cannot create a face without a half edge.")));
+
+            _createdFaces.Add(internalFace, newFace);
+
+            return newFace;
         }
 
         private static Dictionary<TPoint, InternalVertex<TEdge, TPoint>> CreateVertices(IEnumerable<TEdge> edges) =>

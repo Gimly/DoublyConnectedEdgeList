@@ -71,6 +71,9 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
             var dcel = dcelFactory.FromShape(shape);
             dcel.Vertices.Should().HaveCount(4);
+
+            var firstHalfEdge = dcel.FindHalfEdge(points[2], points[0]);
+            firstHalfEdge.Should().NotBeNull();
         }
     }
 }

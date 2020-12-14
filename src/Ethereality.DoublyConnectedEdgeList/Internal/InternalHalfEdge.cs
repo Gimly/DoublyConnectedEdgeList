@@ -24,15 +24,6 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public InternalFace<TEdge, TPoint>? Face { get; set; }
 
-        public HalfEdge<TEdge, TPoint> ToHalfEdge() =>
-            new HalfEdge<TEdge, TPoint>(
-                OriginalSegment,
-                Origin,
-                Twin ?? throw new InvalidOperationException("Cannot create an half edge without a twin"),
-                Next,
-                Previous,
-                Face);
-
         public override string ToString()
         {
             if (!(Next is null))

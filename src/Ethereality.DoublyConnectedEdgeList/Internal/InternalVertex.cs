@@ -18,8 +18,5 @@ namespace Ethereality.DoublyConnectedEdgeList
         public List<InternalHalfEdge<TEdge, TPoint>> HalfEdges { get; }
 
         public override string ToString() => $"Vertex: {OriginalPoint}";
-
-        internal Vertex<TEdge, TPoint> ToVertex() =>
-            new Vertex<TEdge, TPoint>(OriginalPoint, HalfEdges);
     }
 }

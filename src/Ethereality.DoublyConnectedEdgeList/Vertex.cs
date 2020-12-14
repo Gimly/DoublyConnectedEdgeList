@@ -10,10 +10,10 @@ namespace Ethereality.DoublyConnectedEdgeList
     {
         internal Vertex(
             TPoint originalPoint,
-            List<InternalHalfEdge<TEdge, TPoint>> internalHalfEdges)
+            IEnumerable<HalfEdge<TEdge, TPoint>> halfEdges)
         {
             OriginalPoint = originalPoint;
-            HalfEdges = internalHalfEdges.Select(h => h.ToHalfEdge()).ToList();
+            HalfEdges = halfEdges?.ToList() ?? throw new ArgumentNullException(nameof(halfEdges));
         }
 
         public TPoint OriginalPoint { get; }

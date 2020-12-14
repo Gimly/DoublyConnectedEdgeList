@@ -8,18 +8,18 @@ namespace Ethereality.DoublyConnectedEdgeList
     {
         internal HalfEdge(
             TEdge originalSegment,
-            InternalVertex<TEdge, TPoint> origin,
-            InternalHalfEdge<TEdge, TPoint> twin,
-            InternalHalfEdge<TEdge, TPoint>? next,
-            InternalHalfEdge<TEdge, TPoint>? previous,
-            InternalFace<TEdge, TPoint>? face)
+            Vertex<TEdge, TPoint> origin,
+            HalfEdge<TEdge, TPoint> twin,
+            HalfEdge<TEdge, TPoint> next,
+            HalfEdge<TEdge, TPoint> previous,
+            Face<TEdge, TPoint>? face)
         {
             OriginalSegment = originalSegment;
-            Origin = origin.ToVertex();
-            Twin = twin.ToHalfEdge();
-            Next = next?.ToHalfEdge();
-            Previous = previous?.ToHalfEdge();
-            Face = face?.ToFace();
+            Origin = origin;
+            Twin = twin;
+            Next = next;
+            Previous = previous;
+            Face = face;
         }
 
         public TEdge OriginalSegment { get; }
@@ -28,9 +28,9 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public HalfEdge<TEdge, TPoint> Twin { get; }
 
-        public HalfEdge<TEdge, TPoint>? Next { get; }
+        public HalfEdge<TEdge, TPoint> Next { get; }
 
-        public HalfEdge<TEdge, TPoint>? Previous { get; }
+        public HalfEdge<TEdge, TPoint> Previous { get; }
 
         public Face<TEdge, TPoint>? Face { get; }
     }

@@ -6,10 +6,6 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public InternalHalfEdge<TEdge, TPoint>? HalfEdge { get; internal set; }
-
-        public Face<TEdge, TPoint> ToFace() =>
-            new Face<TEdge, TPoint>(
-                HalfEdge ??  throw new InvalidOperationException("Cannot create a face without a linked half edge."));
+        public InternalHalfEdge<TEdge, TPoint>? HalfEdge { get; set; }
     }
 }
