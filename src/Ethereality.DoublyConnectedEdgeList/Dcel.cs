@@ -9,9 +9,9 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TPoint : IEquatable<TPoint>
     {
         internal Dcel(
-            IEnumerable<Vertex<TEdge, TPoint>> vertices,
-            IEnumerable<HalfEdge<TEdge, TPoint>> halfEdges,
-            IEnumerable<Face<TEdge, TPoint>> faces)
+            IEnumerable<IVertex<TEdge, TPoint>> vertices,
+            IEnumerable<IHalfEdge<TEdge, TPoint>> halfEdges,
+            IEnumerable<IFace<TEdge, TPoint>> faces)
         {
             Vertices =
                 vertices?.ToList() ?? throw new ArgumentNullException(nameof(vertices));
@@ -23,7 +23,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                 faces?.ToList() ?? throw new ArgumentNullException(nameof(faces));
         }
 
-        public HalfEdge<TEdge, TPoint>? FindHalfEdge(TPoint pointA, TPoint pointB)
+        public IHalfEdge<TEdge, TPoint>? FindHalfEdge(TPoint pointA, TPoint pointB)
         {
             return HalfEdges.SingleOrDefault(
                 halfEdge =>
@@ -31,10 +31,10 @@ namespace Ethereality.DoublyConnectedEdgeList
                     halfEdge.Next.Origin.OriginalPoint.Equals(pointB));
         }
 
-        public IReadOnlyList<Vertex<TEdge, TPoint>> Vertices { get; }
+        public IReadOnlyList<IVertex<TEdge, TPoint>> Vertices { get; }
 
-        public IReadOnlyList<HalfEdge<TEdge, TPoint>> HalfEdges { get; }
+        public IReadOnlyList<IHalfEdge<TEdge, TPoint>> HalfEdges { get; }
 
-        public IReadOnlyList<Face<TEdge, TPoint>> Faces { get; }
+        public IReadOnlyList<IFace<TEdge, TPoint>> Faces { get; }
     }
 }

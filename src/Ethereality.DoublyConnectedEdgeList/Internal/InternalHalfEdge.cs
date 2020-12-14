@@ -2,7 +2,7 @@
 
 namespace Ethereality.DoublyConnectedEdgeList
 {
-    internal class InternalHalfEdge<TEdge, TPoint>
+    internal class InternalHalfEdge<TEdge, TPoint> : IHalfEdge<TEdge, TPoint>
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
@@ -23,6 +23,19 @@ namespace Ethereality.DoublyConnectedEdgeList
         public InternalHalfEdge<TEdge, TPoint>? Previous { get; set; }
 
         public InternalFace<TEdge, TPoint>? Face { get; set; }
+
+        IVertex<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Origin => Origin;
+
+        IHalfEdge<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Twin =>
+            Twin ?? throw new InvalidOperationException("A half edge must have a twin.");
+
+        IHalfEdge<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Next =>
+            Next ?? throw new InvalidOperationException("A half edge must have a next segment.");
+
+        IHalfEdge<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Previous =>
+            Previous ?? throw new InvalidOperationException("A half edge must have a previous segment.");
+
+        IFace<TEdge, TPoint>? IHalfEdge<TEdge, TPoint>.Face => Face;
 
         public override string ToString()
         {
