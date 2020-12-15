@@ -11,6 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C319F810-566
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{95AA5431-86A5-4378-929C-BDC812C732EE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "continuousDeployment", "continuousDeployment", "{E421ABC0-63D5-4239-8E90-D9E1C89F346A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-deploy.yml = .github\workflows\build-deploy.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
