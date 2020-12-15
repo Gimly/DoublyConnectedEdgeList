@@ -46,42 +46,42 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             dcel.Faces.Should().HaveCount(2);
         }
 
-        [Fact]
-        public void Given_same_input_as_python_implementation_Should_return_same_output()
-        {
-            var points =
-                new[]
-                {
-                    new TestPoint(0, 5),
-                    new TestPoint(2, 5),
-                    new TestPoint(3, 0),
-                    new TestPoint(0, 0)
-                };
+        //[Fact]
+        //public void Given_same_input_as_python_implementation_Should_return_same_output()
+        //{
+        //    var points =
+        //        new[]
+        //        {
+        //            new TestPoint(0, 5),
+        //            new TestPoint(2, 5),
+        //            new TestPoint(3, 0),
+        //            new TestPoint(0, 0)
+        //        };
 
-            var shape =
-                new[]
-                {
-                    new TestSegment(points[0], points[1]),
-                    new TestSegment(points[1], points[2]),
-                    new TestSegment(points[2], points[3]),
-                    new TestSegment(points[3], points[0]),
-                    new TestSegment(points[0], points[2])
-                };
+        //    var shape =
+        //        new[]
+        //        {
+        //            new TestSegment(points[0], points[1]),
+        //            new TestSegment(points[1], points[2]),
+        //            new TestSegment(points[2], points[3]),
+        //            new TestSegment(points[3], points[0]),
+        //            new TestSegment(points[0], points[2])
+        //        };
 
-            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
-            var dcel = dcelFactory.FromShape(shape);
-            dcel.Vertices.Should().HaveCount(4);
+        //    var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+        //    var dcel = dcelFactory.FromShape(shape);
+        //    dcel.Vertices.Should().HaveCount(4);
 
-            var firstHalfEdge = dcel.FindHalfEdge(points[2], points[0]);
-            firstHalfEdge.Should().NotBeNull();
+        //    var firstHalfEdge = dcel.FindHalfEdge(points[2], points[0]);
+        //    firstHalfEdge.Should().NotBeNull();
 
-            var secondHalfEdge = firstHalfEdge.Next;
-            secondHalfEdge.OriginalSegment.PointA.Should().Be(points[0]);
-            secondHalfEdge.OriginalSegment.PointB.Should().Be(points[3]);
+        //    var secondHalfEdge = firstHalfEdge.Next;
+        //    secondHalfEdge.OriginalSegment.PointA.Should().Be(points[0]);
+        //    secondHalfEdge.OriginalSegment.PointB.Should().Be(points[3]);
 
-            var thirdHalfEdge = secondHalfEdge.Next;
-            thirdHalfEdge.OriginalSegment.PointA.Should().Be(points[3]);
-            thirdHalfEdge.OriginalSegment.PointB.Should().Be(points[0]);
-        }
+        //    var thirdHalfEdge = secondHalfEdge.Next;
+        //    thirdHalfEdge.OriginalSegment.PointA.Should().Be(points[3]);
+        //    thirdHalfEdge.OriginalSegment.PointB.Should().Be(points[0]);
+        //}
     }
 }
