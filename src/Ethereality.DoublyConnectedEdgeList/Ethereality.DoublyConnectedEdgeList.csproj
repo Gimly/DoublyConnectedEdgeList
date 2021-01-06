@@ -3,6 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
