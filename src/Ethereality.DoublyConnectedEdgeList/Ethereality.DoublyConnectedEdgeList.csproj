@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
+
+		<LangVersion>8</LangVersion>
 
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -10,6 +12,19 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
 		<Nullable>enable</Nullable>
+
+		<IsPackable>true</IsPackable>
+		<PackageId>Ethereality.Dcel</PackageId>
+		<Title>Doubly Connected Edge List (DCEL)</Title>
+		<Authors>Xavier Hahn</Authors>
+		<PackageTags>math;data structure;graph;dcel;half-edge</PackageTags>
+		<Description>
+			This library allows to create a doubly connected edge list (DCEL) from
+			with a generic implementation of points and edges. It allows an efficient
+			manipulation of the topological information associated with the objects (vertices,
+			edges, faces).
+		</Description>
+		<PackageType></PackageType>
 	</PropertyGroup>
 
 	<ItemGroup>
