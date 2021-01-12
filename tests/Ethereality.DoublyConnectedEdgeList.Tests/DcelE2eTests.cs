@@ -15,6 +15,33 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         }
 
         [Fact]
+        public void Given_a_single_segment_Should_return_valid_dcel()
+        {
+            var a = new TestPoint(0, 0);
+            var b = new TestPoint(0, 1);
+
+            var segment = new TestSegment(a, b);
+
+            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+            var result = dcelFactory.FromShape(new[] { segment });
+
+            result.Vertices.Should().HaveCount(2);
+
+            var firstVertex = result.Vertices[0];
+            var secondVertex = result.Vertices[1];
+
+            firstVertex.OriginalPoint.Should().Be(a);
+            secondVertex.OriginalPoint.Should().Be(b);
+
+            result.HalfEdges.Should().HaveCount(2);
+
+            result.HalfEdges[0].Origin.Should().Be(firstVertex);
+            result.HalfEdges[1].Origin.Should().Be(secondVertex);
+
+            result.Faces.Should().HaveCount(1);
+        }
+
+        [Fact]
         public void Given_a_rectangle_triangle_Should_return_simple_topology()
         {
             var a = new TestPoint(-1, 2);
