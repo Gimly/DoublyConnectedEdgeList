@@ -35,10 +35,36 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
             result.HalfEdges.Should().HaveCount(2);
 
-            result.HalfEdges[0].Origin.Should().Be(firstVertex);
-            result.HalfEdges[1].Origin.Should().Be(secondVertex);
+            var firstHalfEdge = result.HalfEdges[0];
+            var secondHalfEdge = result.HalfEdges[1];
+
+            firstVertex.HalfEdges.Should().ContainSingle().Which.Should().Be(firstHalfEdge);
+            secondVertex.HalfEdges.Should().ContainSingle().Which.Should().Be(secondHalfEdge);
+
+            firstHalfEdge.Origin.Should().Be(firstVertex);
+            secondHalfEdge.Origin.Should().Be(secondVertex);
+
+            firstHalfEdge.OriginalSegment.Should().Be(segment);
+            secondHalfEdge.OriginalSegment.Should().Be(segment);
+
+            firstHalfEdge.Twin.Should().Be(secondHalfEdge);
+            secondHalfEdge.Twin.Should().Be(firstHalfEdge);
+
+            firstHalfEdge.Next.Should().Be(secondHalfEdge);
+            firstHalfEdge.Previous.Should().Be(secondHalfEdge);
+
+            secondHalfEdge.Next.Should().Be(firstHalfEdge);
+            secondHalfEdge.Previous.Should().Be(firstHalfEdge);
 
             result.Faces.Should().HaveCount(1);
+
+            var face = result.Faces.Single();
+
+            firstHalfEdge.Face.Should().Be(face);
+            secondHalfEdge.Face.Should().Be(face);
+
+            face.HalfEdges.Should().HaveCount(2);
+            face.HalfEdges.Should().Contain(new[] { firstHalfEdge, secondHalfEdge });
         }
 
         [Fact]
