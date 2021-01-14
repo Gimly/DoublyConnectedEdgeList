@@ -37,14 +37,9 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         IFace<TEdge, TPoint>? IHalfEdge<TEdge, TPoint>.Face => Face;
 
-        public override string ToString()
-        {
-            if (!(Next is null))
-            {
-                return $"Half edge: {Origin.OriginalPoint} -> {Next.Origin.OriginalPoint}";
-            }
-
-            return $"Half edge: {Origin.OriginalPoint} -> ()";
-        }
+        public override string ToString() =>
+            !(Next is null) 
+                ? $"Half edge: {Origin.OriginalPoint} -> {Next.Origin.OriginalPoint}" 
+                : $"Half edge: {Origin.OriginalPoint} -> ()";
     }
 }
