@@ -10,7 +10,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var angleX = CalculateAngle(x);
             var angleY = CalculateAngle(y);
 
-            return (int)(angleX - angleY);
+            return Math.Sign(angleY - angleX);
         }
 
         private static double CalculateAngle(TestSegment segment)
