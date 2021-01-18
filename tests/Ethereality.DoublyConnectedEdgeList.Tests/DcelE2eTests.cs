@@ -90,24 +90,24 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
             // Act
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
-            var actualDcel = dcelFactory.FromShape(new[] {segmentA, segmentB});
+            var result = dcelFactory.FromShape(new[] {segmentA, segmentB});
 
             // Assert Vertices
-            actualDcel.Vertices.Should().HaveCount(3);
-            actualDcel.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c});
+            result.Vertices.Should().HaveCount(3);
+            result.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c});
 
-            var vertexA = actualDcel.Vertices.Single(v => v.OriginalPoint == a);
-            var vertexB = actualDcel.Vertices.Single(v => v.OriginalPoint == b);
-            var vertexC = actualDcel.Vertices.Single(v => v.OriginalPoint == c);
+            var vertexA = result.Vertices.Single(v => v.OriginalPoint == a);
+            var vertexB = result.Vertices.Single(v => v.OriginalPoint == b);
+            var vertexC = result.Vertices.Single(v => v.OriginalPoint == c);
 
             // Assert HalfEdges
-            actualDcel.HalfEdges.Should().HaveCount(4);
-            var halfEdgeAB = actualDcel.FindHalfEdge(a, b);
-            var halfEdgeBA = actualDcel.FindHalfEdge(b, a);
-            var halfEdgeBC = actualDcel.FindHalfEdge(b, c);
-            var halfEdgeCB = actualDcel.FindHalfEdge(c, b);
+            result.HalfEdges.Should().HaveCount(4);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
 
-            actualDcel.HalfEdges.Should().Contain(new[] {halfEdgeAB, halfEdgeBC, halfEdgeCB, halfEdgeBA});
+            result.HalfEdges.Should().Contain(new[] {halfEdgeAB, halfEdgeBC, halfEdgeCB, halfEdgeBA});
 
             halfEdgeAB.Origin.Should().Be(vertexA);
             halfEdgeBA.Origin.Should().Be(vertexB);
@@ -143,7 +143,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeBA.OriginalSegment.Should().Be(segmentA);
 
             // Assert Faces
-            var face = actualDcel.Faces.Should().ContainSingle().Subject;
+            var face = result.Faces.Should().ContainSingle().Subject;
 
             face.HalfEdges.Should().HaveCount(4);
             face.HalfEdges.Should().Contain(new[] {halfEdgeAB, halfEdgeBA, halfEdgeBC, halfEdgeCB});
@@ -246,26 +246,26 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
 
             // Act
-            var actualDcel = dcelFactory.FromShape(triangle);
+            var result = dcelFactory.FromShape(triangle);
 
             // Assert Vertices
-            actualDcel.Vertices.Should().HaveCount(3);
-            actualDcel.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c});
+            result.Vertices.Should().HaveCount(3);
+            result.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c});
 
-            var vertexA = actualDcel.Vertices.Single(v => v.OriginalPoint == a);
-            var vertexB = actualDcel.Vertices.Single(v => v.OriginalPoint == b);
-            var vertexC = actualDcel.Vertices.Single(v => v.OriginalPoint == c);
+            var vertexA = result.Vertices.Single(v => v.OriginalPoint == a);
+            var vertexB = result.Vertices.Single(v => v.OriginalPoint == b);
+            var vertexC = result.Vertices.Single(v => v.OriginalPoint == c);
 
             // Assert HalfEdges
-            actualDcel.HalfEdges.Should().HaveCount(6);
-            var halfEdgeAB = actualDcel.FindHalfEdge(a, b);
-            var halfEdgeBA = actualDcel.FindHalfEdge(b, a);
-            var halfEdgeBC = actualDcel.FindHalfEdge(b, c);
-            var halfEdgeCB = actualDcel.FindHalfEdge(c, b);
-            var halfEdgeCA = actualDcel.FindHalfEdge(c, a);
-            var halfEdgeAC = actualDcel.FindHalfEdge(a, c);
+            result.HalfEdges.Should().HaveCount(6);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
+            var halfEdgeCA = result.FindHalfEdge(c, a);
+            var halfEdgeAC = result.FindHalfEdge(a, c);
 
-            actualDcel.HalfEdges
+            result.HalfEdges
                       .Should()
                       .Contain(new[] {halfEdgeAB, halfEdgeBA, halfEdgeBC, halfEdgeCB, halfEdgeCA, halfEdgeAC});
 
@@ -277,7 +277,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeAC.Origin.Should().Be(vertexA);
 
             // Assert Vertices
-            foreach (var vertex in actualDcel.Vertices)
+            foreach (var vertex in result.Vertices)
             {
                 vertex.HalfEdges.Should().HaveCount(2);
             }
@@ -303,9 +303,9 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeCA.OriginalSegment.Should().Be(segmentC);
 
             // Assert Faces
-            actualDcel.Faces.Should().HaveCount(2);
-            var face1 = actualDcel.Faces[0];
-            var face2 = actualDcel.Faces[1];
+            result.Faces.Should().HaveCount(2);
+            var face1 = result.Faces[0];
+            var face2 = result.Faces[1];
 
             face1.HalfEdges.Should().HaveCount(3);
             face1.HalfEdges.All(he => he.Face == face1).Should().BeTrue();
@@ -343,41 +343,41 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
 
             // Act
-            var actualDcel = dcelFactory.FromShape(shape);
+            var result = dcelFactory.FromShape(shape);
 
             // Assert Vertices
-            actualDcel.Vertices.Should().HaveCount(8);
-            actualDcel.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c, d, e, f, g, h});
+            result.Vertices.Should().HaveCount(8);
+            result.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] {a, b, c, d, e, f, g, h});
 
-            var vertexA = actualDcel.Vertices.Single(v => v.OriginalPoint == a);
-            var vertexB = actualDcel.Vertices.Single(v => v.OriginalPoint == b);
-            var vertexC = actualDcel.Vertices.Single(v => v.OriginalPoint == c);
-            var vertexD = actualDcel.Vertices.Single(v => v.OriginalPoint == d);
-            var vertexE = actualDcel.Vertices.Single(v => v.OriginalPoint == e);
-            var vertexF = actualDcel.Vertices.Single(v => v.OriginalPoint == f);
-            var vertexG = actualDcel.Vertices.Single(v => v.OriginalPoint == g);
-            var vertexH = actualDcel.Vertices.Single(v => v.OriginalPoint == h);
+            var vertexA = result.Vertices.Single(v => v.OriginalPoint == a);
+            var vertexB = result.Vertices.Single(v => v.OriginalPoint == b);
+            var vertexC = result.Vertices.Single(v => v.OriginalPoint == c);
+            var vertexD = result.Vertices.Single(v => v.OriginalPoint == d);
+            var vertexE = result.Vertices.Single(v => v.OriginalPoint == e);
+            var vertexF = result.Vertices.Single(v => v.OriginalPoint == f);
+            var vertexG = result.Vertices.Single(v => v.OriginalPoint == g);
+            var vertexH = result.Vertices.Single(v => v.OriginalPoint == h);
 
             // Assert HalfEdges
-            actualDcel.HalfEdges.Should().HaveCount(16);
-            var halfEdgeAB = actualDcel.FindHalfEdge(a, b);
-            var halfEdgeBA = actualDcel.FindHalfEdge(b, a);
-            var halfEdgeBC = actualDcel.FindHalfEdge(b, c);
-            var halfEdgeCB = actualDcel.FindHalfEdge(c, b);
-            var halfEdgeCD = actualDcel.FindHalfEdge(c, d);
-            var halfEdgeDC = actualDcel.FindHalfEdge(d, c);
-            var halfEdgeDA = actualDcel.FindHalfEdge(d, a);
-            var halfEdgeAD = actualDcel.FindHalfEdge(a, d);
-            var halfEdgeEF = actualDcel.FindHalfEdge(e, f);
-            var halfEdgeFE = actualDcel.FindHalfEdge(f, e);
-            var halfEdgeFG = actualDcel.FindHalfEdge(f, g);
-            var halfEdgeGF = actualDcel.FindHalfEdge(g, f);
-            var halfEdgeGH = actualDcel.FindHalfEdge(g, h);
-            var halfEdgeHG = actualDcel.FindHalfEdge(h, g);
-            var halfEdgeHE = actualDcel.FindHalfEdge(h, e);
-            var halfEdgeEH = actualDcel.FindHalfEdge(e, h);
+            result.HalfEdges.Should().HaveCount(16);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
+            var halfEdgeCD = result.FindHalfEdge(c, d);
+            var halfEdgeDC = result.FindHalfEdge(d, c);
+            var halfEdgeDA = result.FindHalfEdge(d, a);
+            var halfEdgeAD = result.FindHalfEdge(a, d);
+            var halfEdgeEF = result.FindHalfEdge(e, f);
+            var halfEdgeFE = result.FindHalfEdge(f, e);
+            var halfEdgeFG = result.FindHalfEdge(f, g);
+            var halfEdgeGF = result.FindHalfEdge(g, f);
+            var halfEdgeGH = result.FindHalfEdge(g, h);
+            var halfEdgeHG = result.FindHalfEdge(h, g);
+            var halfEdgeHE = result.FindHalfEdge(h, e);
+            var halfEdgeEH = result.FindHalfEdge(e, h);
 
-            actualDcel.HalfEdges.Should()
+            result.HalfEdges.Should()
                       .Contain(
                           new[]
                           {
@@ -417,7 +417,7 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeEH.Origin.Should().Be(vertexE);
 
             // Assert Vertices
-            foreach (var vertex in actualDcel.Vertices)
+            foreach (var vertex in result.Vertices)
             {
                 vertex.HalfEdges.Should().HaveCount(2);
             }
@@ -493,11 +493,11 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeHE.OriginalSegment.Should().Be(segmentH);
 
             // Assert Faces
-            actualDcel.Faces.Should().HaveCount(4);
-            var face1 = actualDcel.Faces[0];
-            var face2 = actualDcel.Faces[1];
-            var face3 = actualDcel.Faces[2];
-            var face4 = actualDcel.Faces[3];
+            result.Faces.Should().HaveCount(4);
+            var face1 = result.Faces[0];
+            var face2 = result.Faces[1];
+            var face3 = result.Faces[2];
+            var face4 = result.Faces[3];
 
             face1.HalfEdges.Should().HaveCount(4);
             face1.HalfEdges.All(he => he.Face == face1).Should().BeTrue();
@@ -551,49 +551,49 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
 
             // Act
-            var actualDcel = dcelFactory.FromShape(shape);
+            var result = dcelFactory.FromShape(shape);
 
             // Assert Vertices
-            actualDcel.Vertices.Should().HaveCount(8);
-            actualDcel.Vertices.Select(v => v.OriginalPoint).Should().BeEquivalentTo(a, b, c, d, e, f, g, h);
+            result.Vertices.Should().HaveCount(8);
+            result.Vertices.Select(v => v.OriginalPoint).Should().BeEquivalentTo(a, b, c, d, e, f, g, h);
 
-            var vertexA = actualDcel.Vertices.Single(v => v.OriginalPoint == a);
-            var vertexB = actualDcel.Vertices.Single(v => v.OriginalPoint == b);
-            var vertexC = actualDcel.Vertices.Single(v => v.OriginalPoint == c);
-            var vertexD = actualDcel.Vertices.Single(v => v.OriginalPoint == d);
-            var vertexE = actualDcel.Vertices.Single(v => v.OriginalPoint == e);
-            var vertexF = actualDcel.Vertices.Single(v => v.OriginalPoint == f);
-            var vertexG = actualDcel.Vertices.Single(v => v.OriginalPoint == g);
-            var vertexH = actualDcel.Vertices.Single(v => v.OriginalPoint == h);
+            var vertexA = result.Vertices.Single(v => v.OriginalPoint == a);
+            var vertexB = result.Vertices.Single(v => v.OriginalPoint == b);
+            var vertexC = result.Vertices.Single(v => v.OriginalPoint == c);
+            var vertexD = result.Vertices.Single(v => v.OriginalPoint == d);
+            var vertexE = result.Vertices.Single(v => v.OriginalPoint == e);
+            var vertexF = result.Vertices.Single(v => v.OriginalPoint == f);
+            var vertexG = result.Vertices.Single(v => v.OriginalPoint == g);
+            var vertexH = result.Vertices.Single(v => v.OriginalPoint == h);
 
             // Assert HalfEdges
-            actualDcel.HalfEdges.Should().HaveCount(24);
-            var halfEdgeAB = actualDcel.FindHalfEdge(a, b);
-            var halfEdgeBA = actualDcel.FindHalfEdge(b, a);
-            var halfEdgeBC = actualDcel.FindHalfEdge(b, c);
-            var halfEdgeCB = actualDcel.FindHalfEdge(c, b);
-            var halfEdgeCD = actualDcel.FindHalfEdge(c, d);
-            var halfEdgeDC = actualDcel.FindHalfEdge(d, c);
-            var halfEdgeDE = actualDcel.FindHalfEdge(d, e);
-            var halfEdgeED = actualDcel.FindHalfEdge(e, d);
-            var halfEdgeEF = actualDcel.FindHalfEdge(e, f);
-            var halfEdgeFE = actualDcel.FindHalfEdge(f, e);
-            var halfEdgeFG = actualDcel.FindHalfEdge(f, g);
-            var halfEdgeGF = actualDcel.FindHalfEdge(g, f);
-            var halfEdgeGH = actualDcel.FindHalfEdge(g, h);
-            var halfEdgeHG = actualDcel.FindHalfEdge(h, g);
-            var halfEdgeDH = actualDcel.FindHalfEdge(d, h);
-            var halfEdgeHD = actualDcel.FindHalfEdge(h, d);
-            var halfEdgeHC = actualDcel.FindHalfEdge(h, c);
-            var halfEdgeCH = actualDcel.FindHalfEdge(c, h);
-            var halfEdgeFD = actualDcel.FindHalfEdge(f, d);
-            var halfEdgeDF = actualDcel.FindHalfEdge(d, f);
-            var halfEdgeHF = actualDcel.FindHalfEdge(h, f);
-            var halfEdgeFH = actualDcel.FindHalfEdge(f, h);
-            var halfEdgeGA = actualDcel.FindHalfEdge(g, a);
-            var halfEdgeAG = actualDcel.FindHalfEdge(a, g);
+            result.HalfEdges.Should().HaveCount(24);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
+            var halfEdgeCD = result.FindHalfEdge(c, d);
+            var halfEdgeDC = result.FindHalfEdge(d, c);
+            var halfEdgeDE = result.FindHalfEdge(d, e);
+            var halfEdgeED = result.FindHalfEdge(e, d);
+            var halfEdgeEF = result.FindHalfEdge(e, f);
+            var halfEdgeFE = result.FindHalfEdge(f, e);
+            var halfEdgeFG = result.FindHalfEdge(f, g);
+            var halfEdgeGF = result.FindHalfEdge(g, f);
+            var halfEdgeGH = result.FindHalfEdge(g, h);
+            var halfEdgeHG = result.FindHalfEdge(h, g);
+            var halfEdgeDH = result.FindHalfEdge(d, h);
+            var halfEdgeHD = result.FindHalfEdge(h, d);
+            var halfEdgeHC = result.FindHalfEdge(h, c);
+            var halfEdgeCH = result.FindHalfEdge(c, h);
+            var halfEdgeFD = result.FindHalfEdge(f, d);
+            var halfEdgeDF = result.FindHalfEdge(d, f);
+            var halfEdgeHF = result.FindHalfEdge(h, f);
+            var halfEdgeFH = result.FindHalfEdge(f, h);
+            var halfEdgeGA = result.FindHalfEdge(g, a);
+            var halfEdgeAG = result.FindHalfEdge(a, g);
 
-            actualDcel.HalfEdges.Should()
+            result.HalfEdges.Should()
                       .Contain(
                           new[]
                           {
@@ -779,13 +779,13 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeAG.OriginalSegment.Should().Be(segmentL);
 
             // Assert Faces
-            actualDcel.Faces.Should().HaveCount(6);
-            var face1 = actualDcel.Faces[0];
-            var face2 = actualDcel.Faces[1];
-            var face3 = actualDcel.Faces[2];
-            var face4 = actualDcel.Faces[3];
-            var face5 = actualDcel.Faces[4];
-            var face6 = actualDcel.Faces[5];
+            result.Faces.Should().HaveCount(6);
+            var face1 = result.Faces[0];
+            var face2 = result.Faces[1];
+            var face3 = result.Faces[2];
+            var face4 = result.Faces[3];
+            var face5 = result.Faces[4];
+            var face6 = result.Faces[5];
 
             face1.HalfEdges.Should().HaveCount(7);
             face1.HalfEdges.All(he => he.Face == face1).Should().BeTrue();
