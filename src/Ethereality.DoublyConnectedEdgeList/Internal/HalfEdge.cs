@@ -35,7 +35,8 @@ namespace Ethereality.DoublyConnectedEdgeList
         IHalfEdge<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Previous =>
             Previous ?? throw new InvalidOperationException("A half edge must have a previous segment.");
 
-        IFace<TEdge, TPoint>? IHalfEdge<TEdge, TPoint>.Face => Face;
+        IFace<TEdge, TPoint> IHalfEdge<TEdge, TPoint>.Face =>
+            Face ?? throw new InvalidOperationException("A half edge must have a face.");
 
         public override string ToString() =>
             !(Next is null) 

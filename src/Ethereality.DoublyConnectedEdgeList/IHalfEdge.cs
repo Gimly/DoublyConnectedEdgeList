@@ -16,6 +16,6 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public IHalfEdge<TEdge, TPoint> Previous { get; }
 
-        public IFace<TEdge, TPoint>? Face { get; }
+        public IFace<TEdge, TPoint> Face { get; }
     }
 }
