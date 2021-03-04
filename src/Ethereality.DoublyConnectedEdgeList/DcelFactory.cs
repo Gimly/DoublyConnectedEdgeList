@@ -16,18 +16,22 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         public Dcel<TEdge, TPoint> FromShape(IEnumerable<TEdge> edges)
         {
-            var verticesDictionary = CreateVertices(edges);
+            var enumeratedEdges = edges?.ToList() ?? throw new ArgumentNullException(nameof(edges));
 
-            var halfEdges = CreateHalfEdges(edges, verticesDictionary);
-            List<Face<TEdge, TPoint>> faces = CreateFaces(halfEdges);
+            if (enumeratedEdges.Count == 0)
+            {
+                throw new ArgumentException("Cannot create a DCEL from an empty collection of edges.");
+            }
 
-            return new Dcel<TEdge, TPoint>(
-                verticesDictionary.Values.Cast<IVertex<TEdge, TPoint>>(),
-                halfEdges.Cast<IHalfEdge<TEdge, TPoint>>(),
-                faces.Cast<IFace<TEdge, TPoint>>());
+            var verticesDictionary = CreateVertices(enumeratedEdges);
+
+            var halfEdges = CreateHalfEdges(enumeratedEdges, verticesDictionary);
+            var faces = CreateFaces(halfEdges);
+
+            return new Dcel<TEdge, TPoint>(verticesDictionary.Values, halfEdges, faces);
         }
 
-        private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IEnumerable<TEdge> edges) =>
+        private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IReadOnlyList<TEdge> edges) =>
             edges.Select(s => s.PointA)
                  .Concat(edges.Select(s => s.PointB))
                  .Distinct()
@@ -35,7 +39,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                  .ToDictionary(value => value.OriginalPoint, value => value);
 
         private List<HalfEdge<TEdge, TPoint>> CreateHalfEdges(
-            IEnumerable<TEdge> edges,
+            IReadOnlyList<TEdge> edges,
             Dictionary<TPoint, Vertex<TEdge, TPoint>> verticesDictionary)
         {
             var halfEdges = new List<HalfEdge<TEdge, TPoint>>();
@@ -47,10 +51,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                 pointAVertex.HalfEdges.Add(firstHalfEdge);
 
                 var pointBVertex = verticesDictionary[segment.PointB];
-                var secondHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointBVertex)
-                {
-                    Twin = firstHalfEdge
-                };
+                var secondHalfEdge = new HalfEdge<TEdge, TPoint>(segment, pointBVertex) {Twin = firstHalfEdge};
 
                 pointBVertex.HalfEdges.Add(secondHalfEdge);
 
@@ -67,26 +68,26 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         private void SetHalfEdgesValues(Dictionary<TPoint, Vertex<TEdge, TPoint>> verticesDictionary)
         {
-            foreach (var vertex in verticesDictionary.Values)
-            {
-                var halfEdgesList =
-                    vertex
-                        .HalfEdges
-                        .Cast<HalfEdge<TEdge, TPoint>>()
-                        .OrderBy(
-                            he => he.OriginalSegment,
-                            _coincidentEdgeComparer)
-                        .ToList();
+            var verticesHalfEdgeLists =
+                verticesDictionary.Values.Select(
+                    vertex => vertex
+                              .HalfEdges
+                              .Cast<HalfEdge<TEdge, TPoint>>()
+                              .OrderBy(
+                                  he => he.OriginalSegment,
+                                  _coincidentEdgeComparer)
+                              .ToList());
 
-                for (int i = 0; i < halfEdgesList.Count - 1; i++)
+            foreach (var halfEdgesList in verticesHalfEdgeLists)
+            {
+                for (var i = 0; i < halfEdgesList.Count - 1; i++)
                 {
                     var e1 = halfEdgesList[i];
                     var e2 = halfEdgesList[i + 1];
 
                     if (e1.Twin is null)
                     {
-                        throw new InvalidOperationException(
-                            $"There was no twin attached to half edge {e1}.");
+                        throw new InvalidOperationException($"There was no twin attached to half edge {e1}.");
                     }
 
                     e1.Twin.Next = e2;
@@ -98,8 +99,7 @@ namespace Ethereality.DoublyConnectedEdgeList
 
                 if (he1.Twin is null)
                 {
-                    throw new InvalidOperationException(
-                        $"There was no twin attached to half edge {he1}.");
+                    throw new InvalidOperationException($"There was no twin attached to half edge {he1}.");
                 }
 
                 he1.Twin.Next = he2;
@@ -107,36 +107,35 @@ namespace Ethereality.DoublyConnectedEdgeList
             }
         }
 
-        private static List<Face<TEdge, TPoint>> CreateFaces(
-            List<HalfEdge<TEdge, TPoint>> halfEdges)
+        private static List<Face<TEdge, TPoint>> CreateFaces(List<HalfEdge<TEdge, TPoint>> halfEdges)
         {
             var faces = new List<Face<TEdge, TPoint>>();
 
             foreach (var halfEdge in halfEdges)
             {
-                if (halfEdge.Face == null)
+                if (halfEdge.Face != null)
                 {
-                    var face = new Face<TEdge, TPoint>();
+                    continue;
+                }
 
-                    var currentHalfEdge = halfEdge;
+                var face = new Face<TEdge, TPoint>();
 
-                    while (currentHalfEdge.Next != halfEdge)
-                    {
-                        currentHalfEdge.Face = face;
-                        face.HalfEdges.Add(currentHalfEdge);
+                var currentHalfEdge = halfEdge;
 
-                        if (currentHalfEdge.Next is null)
-                        {
-                            throw new InvalidOperationException(
-                                $"The half edge {currentHalfEdge} has a null next edge.");
-                        }
-                        currentHalfEdge = currentHalfEdge.Next;
-                    }
+                while (currentHalfEdge.Next != halfEdge)
+                {
                     currentHalfEdge.Face = face;
                     face.HalfEdges.Add(currentHalfEdge);
 
-                    faces.Add(face);
+                    currentHalfEdge = currentHalfEdge.Next
+                                   ?? throw new InvalidOperationException(
+                                          $"The half edge {currentHalfEdge} has a null next edge.");
                 }
+
+                currentHalfEdge.Face = face;
+                face.HalfEdges.Add(currentHalfEdge);
+
+                faces.Add(face);
             }
 
             return faces;
