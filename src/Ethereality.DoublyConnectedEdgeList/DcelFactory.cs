@@ -38,12 +38,13 @@ namespace Ethereality.DoublyConnectedEdgeList
 
             foreach (var point in allPoints)
             {
-                var existingCloseByVertex = result.Values.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
-
-                if (!result.ContainsKey(point))
+                if (result.ContainsKey(point))
                 {
-                    result.Add(point, existingCloseByVertex ?? new Vertex<TEdge, TPoint>(point));
+                    continue;
                 }
+
+                var existingCloseByVertex = result.Values.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
+                result.Add(point, existingCloseByVertex ?? new Vertex<TEdge, TPoint>(point));
             }
 
             return result;
