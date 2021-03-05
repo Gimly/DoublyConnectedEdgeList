@@ -2,7 +2,7 @@
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
-    internal class TestPoint : IEquatable<TestPoint>
+    internal sealed class TestPoint : IEquatable<TestPoint>
     {
         private const double ComparisonTolerance = 1e-10;
 

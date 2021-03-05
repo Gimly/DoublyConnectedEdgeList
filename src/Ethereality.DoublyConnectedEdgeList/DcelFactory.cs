@@ -33,9 +33,9 @@ namespace Ethereality.DoublyConnectedEdgeList
 
         private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IReadOnlyList<TEdge> edges)
         {
-            var allPoints = edges.SelectMany(edge => new[] {edge.PointA, edge.PointB}).ToList();
             var result = new Dictionary<TPoint, Vertex<TEdge, TPoint>>();
-
+            var allPoints = edges.SelectMany(edge => new[] {edge.PointA, edge.PointB});
+            
             foreach (var point in allPoints)
             {
                 if (result.ContainsKey(point))
