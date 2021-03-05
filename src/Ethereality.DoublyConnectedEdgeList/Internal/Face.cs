@@ -7,10 +7,7 @@ namespace Ethereality.DoublyConnectedEdgeList
         where TEdge : IEdge<TPoint>
         where TPoint : IEquatable<TPoint>
     {
-        public Face()
-        {
-            HalfEdges = new List<HalfEdge<TEdge, TPoint>>();
-        }
+        public Face() => HalfEdges = new List<HalfEdge<TEdge, TPoint>>();
 
         public List<HalfEdge<TEdge, TPoint>> HalfEdges { get; }
 

@@ -836,18 +836,28 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
 
             // Assert Vertices
             result.Vertices.Should().HaveCount(3);
-            result.Vertices.Select(v => v.OriginalPoint).Should().Contain(new[] { a, veryCloseToB, c });
 
-            var vertexA = result.Vertices.Single(v => v.OriginalPoint == a);
-            var vertexB = result.Vertices.Single(v => v.OriginalPoint == veryCloseToB);
-            var vertexC = result.Vertices.Single(v => v.OriginalPoint == c);
+            var vertexA = result.FindVertex(a);
+            var vertexB = result.FindVertex(b);
+            var vertexBPrime = result.FindVertex(veryCloseToB);
+            var vertexC = result.FindVertex(c);
+
+            vertexA.Should().NotBeNull();
+            vertexA!.OriginalPoint.Should().Be(a);
+
+            vertexBPrime.Should().NotBeNull();
+            vertexBPrime.Should().BeSameAs(vertexB);
+            vertexBPrime!.OriginalPoint.Should().Be(b);
+
+            vertexC.Should().NotBeNull();
+            vertexC!.OriginalPoint.Should().Be(c);
 
             // Assert HalfEdges
             result.HalfEdges.Should().HaveCount(4);
-            var halfEdgeAB = result.FindHalfEdge(a, veryCloseToB);
-            var halfEdgeBA = result.FindHalfEdge(veryCloseToB, a);
-            var halfEdgeBC = result.FindHalfEdge(veryCloseToB, c);
-            var halfEdgeCB = result.FindHalfEdge(c, veryCloseToB);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
 
             result.HalfEdges.Should().Contain(new[] { halfEdgeAB, halfEdgeBC, halfEdgeCB, halfEdgeBA });
 

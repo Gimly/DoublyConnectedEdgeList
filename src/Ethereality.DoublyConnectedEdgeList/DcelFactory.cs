@@ -28,15 +28,26 @@ namespace Ethereality.DoublyConnectedEdgeList
             var halfEdges = CreateHalfEdges(enumeratedEdges, verticesDictionary);
             var faces = CreateFaces(halfEdges);
 
-            return new Dcel<TEdge, TPoint>(verticesDictionary.Values, halfEdges, faces);
+            return new Dcel<TEdge, TPoint>(verticesDictionary.Values.Distinct(), halfEdges, faces);
         }
 
-        private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IReadOnlyList<TEdge> edges) =>
-            edges.Select(s => s.PointA)
-                 .Concat(edges.Select(s => s.PointB))
-                 .Distinct()
-                 .Select(point => new Vertex<TEdge, TPoint>(point))
-                 .ToDictionary(value => value.OriginalPoint, value => value);
+        private static Dictionary<TPoint, Vertex<TEdge, TPoint>> CreateVertices(IReadOnlyList<TEdge> edges)
+        {
+            var allPoints = edges.SelectMany(edge => new[] {edge.PointA, edge.PointB}).ToList();
+            var result = new Dictionary<TPoint, Vertex<TEdge, TPoint>>();
+
+            foreach (var point in allPoints)
+            {
+                var existingCloseByVertex = result.Values.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
+
+                if (!result.ContainsKey(point))
+                {
+                    result.Add(point, existingCloseByVertex ?? new Vertex<TEdge, TPoint>(point));
+                }
+            }
+
+            return result;
+        }
 
         private List<HalfEdge<TEdge, TPoint>> CreateHalfEdges(
             IReadOnlyList<TEdge> edges,
