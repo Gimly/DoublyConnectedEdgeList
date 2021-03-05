@@ -23,14 +23,32 @@ namespace Ethereality.DoublyConnectedEdgeList
                 faces?.ToList() ?? throw new ArgumentNullException(nameof(faces));
         }
 
-        public IVertex<TEdge, TPoint>? FindVertex(TPoint point) =>
-            Vertices.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
+        public IVertex<TEdge, TPoint>? FindVertex(TPoint point)
+        {
+            if (point is null)
+            {
+                throw new ArgumentNullException(nameof(point));
+            }
 
-        public IHalfEdge<TEdge, TPoint>? FindHalfEdge(TPoint pointA, TPoint pointB) =>
-            HalfEdges.SingleOrDefault(
+            return Vertices.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
+        }
+
+        public IHalfEdge<TEdge, TPoint>? FindHalfEdge(TPoint pointA, TPoint pointB)
+        {
+            if (pointA is null)
+            {
+                throw new ArgumentNullException(nameof(pointA));
+            }
+
+            if (pointB is null)
+            {
+                throw new ArgumentNullException(nameof(pointB));
+            }
+
+            return HalfEdges.SingleOrDefault(
                 halfEdge =>
-                    halfEdge.Origin.OriginalPoint.Equals(pointA) &&
-                    halfEdge.Next.Origin.OriginalPoint.Equals(pointB));
+                    halfEdge.Origin.OriginalPoint.Equals(pointA) && halfEdge.Next.Origin.OriginalPoint.Equals(pointB));
+        }
 
         public IReadOnlyList<IVertex<TEdge, TPoint>> Vertices { get; }
 
