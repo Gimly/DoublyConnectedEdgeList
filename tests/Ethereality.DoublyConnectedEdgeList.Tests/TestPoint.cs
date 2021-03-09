@@ -2,8 +2,10 @@
 
 namespace Ethereality.DoublyConnectedEdgeList.Tests
 {
-    internal class TestPoint : IEquatable<TestPoint>
+    internal sealed class TestPoint : IEquatable<TestPoint>
     {
+        private const double ComparisonTolerance = 1e-10;
+
         public TestPoint(double x, double y)
         {
             X = x;
@@ -11,20 +13,24 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         }
 
         public double X { get; }
+
         public double Y { get; }
 
         public bool Equals(TestPoint other)
         {
-            return X == other.X && Y == other.Y;
+            if (other is null)
+            {
+                return false;
+            }
+
+            return Math.Abs(X - other.X) < ComparisonTolerance
+                && Math.Abs(Y - other.Y) < ComparisonTolerance;
         }
 
         public override int GetHashCode() => HashCode.Combine(X, Y);
 
         public override string ToString() => $"({X},{Y})";
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as TestPoint);
-        }
+        public override bool Equals(object obj) => Equals(obj as TestPoint);
     }
 }

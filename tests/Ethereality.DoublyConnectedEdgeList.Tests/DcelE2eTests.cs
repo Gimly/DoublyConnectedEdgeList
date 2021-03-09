@@ -817,5 +817,90 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             face5.HalfEdges.Should()
                  .Contain(new[] {halfEdgeHG, halfEdgeGF, halfEdgeFH});
         }
+
+        [Fact]
+        public void Given_points_considered_equal_Should_return_same_vertices()
+        {
+            // Arrange
+            var a = new TestPoint(0, 0);
+            var b = new TestPoint(0, 1);
+            var veryCloseToB = new TestPoint(0 + 1e-11, 1 + 1e-11);
+            var c = new TestPoint(0, 2);
+
+            var segmentA = new TestSegment(a, b);
+            var segmentB = new TestSegment(veryCloseToB, c);
+
+            // Act
+            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+            var result = dcelFactory.FromShape(new[] { segmentA, segmentB });
+
+            // Assert Vertices
+            result.Vertices.Should().HaveCount(3);
+
+            var vertexA = result.FindVertex(a);
+            var vertexB = result.FindVertex(b);
+            var vertexBPrime = result.FindVertex(veryCloseToB);
+            var vertexC = result.FindVertex(c);
+
+            vertexA.Should().NotBeNull();
+            vertexA!.OriginalPoint.Should().Be(a);
+
+            vertexBPrime.Should().NotBeNull();
+            vertexBPrime.Should().BeSameAs(vertexB);
+            vertexBPrime!.OriginalPoint.Should().Be(b);
+
+            vertexC.Should().NotBeNull();
+            vertexC!.OriginalPoint.Should().Be(c);
+
+            // Assert HalfEdges
+            result.HalfEdges.Should().HaveCount(4);
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBA = result.FindHalfEdge(b, a);
+            var halfEdgeBC = result.FindHalfEdge(b, c);
+            var halfEdgeCB = result.FindHalfEdge(c, b);
+
+            result.HalfEdges.Should().Contain(new[] { halfEdgeAB, halfEdgeBC, halfEdgeCB, halfEdgeBA });
+
+            halfEdgeAB.Origin.Should().Be(vertexA);
+            halfEdgeBA.Origin.Should().Be(vertexB);
+            halfEdgeBC.Origin.Should().Be(vertexB);
+            halfEdgeCB.Origin.Should().Be(vertexC);
+
+            // Assert Vertices
+            vertexA.HalfEdges.Should().ContainSingle().Which.Should().Be(halfEdgeAB);
+
+            vertexB.HalfEdges.Should().HaveCount(2);
+            vertexB.HalfEdges.Should().Contain(new[] { halfEdgeBA, halfEdgeBC });
+            vertexC.HalfEdges.Should().ContainSingle().Which.Should().Be(halfEdgeCB);
+
+            // Assert HalfEdges
+            halfEdgeAB.Next.Should().Be(halfEdgeBC);
+            halfEdgeAB.Twin.Should().Be(halfEdgeBA);
+            halfEdgeAB.Previous.Should().Be(halfEdgeBA);
+            halfEdgeAB.OriginalSegment.Should().Be(segmentA);
+
+            halfEdgeBC.Next.Should().Be(halfEdgeCB);
+            halfEdgeBC.Twin.Should().Be(halfEdgeCB);
+            halfEdgeBC.Previous.Should().Be(halfEdgeAB);
+            halfEdgeBC.OriginalSegment.Should().Be(segmentB);
+
+            halfEdgeCB.Next.Should().Be(halfEdgeBA);
+            halfEdgeCB.Twin.Should().Be(halfEdgeBC);
+            halfEdgeCB.Previous.Should().Be(halfEdgeBC);
+            halfEdgeCB.OriginalSegment.Should().Be(segmentB);
+
+            halfEdgeBA.Next.Should().Be(halfEdgeAB);
+            halfEdgeBA.Twin.Should().Be(halfEdgeAB);
+            halfEdgeBA.Previous.Should().Be(halfEdgeCB);
+            halfEdgeBA.OriginalSegment.Should().Be(segmentA);
+
+            // Assert Faces
+            var face = result.Faces.Should().ContainSingle().Subject;
+
+            face.HalfEdges.Should().HaveCount(4);
+            face.HalfEdges.Should().Contain(new[] { halfEdgeAB, halfEdgeBA, halfEdgeBC, halfEdgeCB });
+
+            face.HalfEdges.All(he => he.Face == face).Should().BeTrue();
+        }
     }
 }
