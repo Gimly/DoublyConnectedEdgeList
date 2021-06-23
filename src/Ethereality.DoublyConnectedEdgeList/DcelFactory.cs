@@ -43,7 +43,7 @@ namespace Ethereality.DoublyConnectedEdgeList
                     continue;
                 }
 
-                var existingCloseByVertex = result.Values.SingleOrDefault(vertex => vertex.OriginalPoint.Equals(point));
+                var existingCloseByVertex = result.Values.FirstOrDefault(vertex => vertex.OriginalPoint.Equals(point));
                 result.Add(point, existingCloseByVertex ?? new Vertex<TEdge, TPoint>(point));
             }
 
