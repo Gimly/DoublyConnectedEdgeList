@@ -317,6 +317,34 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
         }
 
         [Fact]
+        public void Given_a_shape_with_right_triangle_and_added_edge_Should_return_valid_dcel()
+        {
+            // Arrange
+            var a = new TestPoint(-1, 2);
+            var b = new TestPoint(4, 3);
+            var c = new TestPoint(5, -2);
+            var d = new TestPoint(4, 4);
+
+            var segmentA = new TestSegment(a, b);
+            var segmentB = new TestSegment(b, c);
+            var segmentC = new TestSegment(c, a);
+            var segmentD = new TestSegment(b, d);
+
+            var segments = new[] { segmentA, segmentB, segmentC, segmentD };
+
+            var dcelFactory = new DcelFactory<TestSegment, TestPoint>(new TestSegmentComparer());
+
+            // Act
+            var result = dcelFactory.FromShape(segments);
+
+            // check the next of half edge AB; it should be BD
+            var halfEdgeAB = result.FindHalfEdge(a, b);
+            var halfEdgeBD = result.FindHalfEdge(b, d);
+            halfEdgeAB.Next.Should().Be(halfEdgeBD);
+        }
+
+
+        [Fact]
         public void Given_a_shape_with_hole_Should_return_valid_dcel()
         {
             // Arrange
