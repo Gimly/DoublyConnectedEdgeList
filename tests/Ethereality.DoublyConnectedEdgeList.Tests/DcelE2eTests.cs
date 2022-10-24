@@ -696,112 +696,112 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             halfEdgeBA.Previous.Should().Be(halfEdgeCB);
             halfEdgeBA.OriginalSegment.Should().Be(segmentA);
 
-            halfEdgeBC.Next.Should().Be(halfEdgeCD);
+            halfEdgeBC.Next.Should().Be(halfEdgeCH);
             halfEdgeBC.Twin.Should().Be(halfEdgeCB);
             halfEdgeBC.Previous.Should().Be(halfEdgeAB);
             halfEdgeBC.OriginalSegment.Should().Be(segmentB);
 
             halfEdgeCB.Next.Should().Be(halfEdgeBA);
             halfEdgeCB.Twin.Should().Be(halfEdgeBC);
-            halfEdgeCB.Previous.Should().Be(halfEdgeHC);
+            halfEdgeCB.Previous.Should().Be(halfEdgeDC);
             halfEdgeCB.OriginalSegment.Should().Be(segmentB);
 
-            halfEdgeCD.Next.Should().Be(halfEdgeDE);
+            halfEdgeCD.Next.Should().Be(halfEdgeDH);
             halfEdgeCD.Twin.Should().Be(halfEdgeDC);
-            halfEdgeCD.Previous.Should().Be(halfEdgeBC);
+            halfEdgeCD.Previous.Should().Be(halfEdgeHC);
             halfEdgeCD.OriginalSegment.Should().Be(segmentC);
 
-            halfEdgeDC.Next.Should().Be(halfEdgeCH);
+            halfEdgeDC.Next.Should().Be(halfEdgeCB);
             halfEdgeDC.Twin.Should().Be(halfEdgeCD);
-            halfEdgeDC.Previous.Should().Be(halfEdgeHD);
+            halfEdgeDC.Previous.Should().Be(halfEdgeED);
             halfEdgeDC.OriginalSegment.Should().Be(segmentC);
 
             halfEdgeDE.Next.Should().Be(halfEdgeEF);
             halfEdgeDE.Twin.Should().Be(halfEdgeED);
-            halfEdgeDE.Previous.Should().Be(halfEdgeCD);
+            halfEdgeDE.Previous.Should().Be(halfEdgeFD);
             halfEdgeDE.OriginalSegment.Should().Be(segmentD);
 
-            halfEdgeED.Next.Should().Be(halfEdgeDF);
+            halfEdgeED.Next.Should().Be(halfEdgeDC);
             halfEdgeED.Twin.Should().Be(halfEdgeDE);
             halfEdgeED.Previous.Should().Be(halfEdgeFE);
             halfEdgeED.OriginalSegment.Should().Be(segmentD);
 
-            halfEdgeEF.Next.Should().Be(halfEdgeFG);
+            halfEdgeEF.Next.Should().Be(halfEdgeFD);
             halfEdgeEF.Twin.Should().Be(halfEdgeFE);
             halfEdgeEF.Previous.Should().Be(halfEdgeDE);
             halfEdgeEF.OriginalSegment.Should().Be(segmentE);
 
             halfEdgeFE.Next.Should().Be(halfEdgeED);
             halfEdgeFE.Twin.Should().Be(halfEdgeEF);
-            halfEdgeFE.Previous.Should().Be(halfEdgeDF);
+            halfEdgeFE.Previous.Should().Be(halfEdgeGF);
             halfEdgeFE.OriginalSegment.Should().Be(segmentE);
 
-            halfEdgeFG.Next.Should().Be(halfEdgeGA);
+            halfEdgeFG.Next.Should().Be(halfEdgeGH);
             halfEdgeFG.Twin.Should().Be(halfEdgeGF);
-            halfEdgeFG.Previous.Should().Be(halfEdgeEF);
+            halfEdgeFG.Previous.Should().Be(halfEdgeHF);
             halfEdgeFG.OriginalSegment.Should().Be(segmentF);
 
-            halfEdgeGF.Next.Should().Be(halfEdgeFH);
+            halfEdgeGF.Next.Should().Be(halfEdgeFE);
             halfEdgeGF.Twin.Should().Be(halfEdgeFG);
-            halfEdgeGF.Previous.Should().Be(halfEdgeHG);
+            halfEdgeGF.Previous.Should().Be(halfEdgeAG);
             halfEdgeGF.OriginalSegment.Should().Be(segmentF);
 
-            halfEdgeGH.Next.Should().Be(halfEdgeHC);
+            halfEdgeGH.Next.Should().Be(halfEdgeHF);
             halfEdgeGH.Twin.Should().Be(halfEdgeHG);
-            halfEdgeGH.Previous.Should().Be(halfEdgeAG);
+            halfEdgeGH.Previous.Should().Be(halfEdgeFG);
             halfEdgeGH.OriginalSegment.Should().Be(segmentG);
 
-            halfEdgeHG.Next.Should().Be(halfEdgeGF);
+            halfEdgeHG.Next.Should().Be(halfEdgeGA);
             halfEdgeHG.Twin.Should().Be(halfEdgeGH);
-            halfEdgeHG.Previous.Should().Be(halfEdgeFH);
+            halfEdgeHG.Previous.Should().Be(halfEdgeCH);
             halfEdgeHG.OriginalSegment.Should().Be(segmentG);
 
-            halfEdgeDH.Next.Should().Be(halfEdgeHF);
+            halfEdgeDH.Next.Should().Be(halfEdgeHC);
             halfEdgeDH.Twin.Should().Be(halfEdgeHD);
-            halfEdgeDH.Previous.Should().Be(halfEdgeFD);
+            halfEdgeDH.Previous.Should().Be(halfEdgeCD);
             halfEdgeDH.OriginalSegment.Should().Be(segmentH);
 
-            halfEdgeHD.Next.Should().Be(halfEdgeDC);
+            halfEdgeHD.Next.Should().Be(halfEdgeDF);
             halfEdgeHD.Twin.Should().Be(halfEdgeDH);
-            halfEdgeHD.Previous.Should().Be(halfEdgeCH);
+            halfEdgeHD.Previous.Should().Be(halfEdgeFH);
             halfEdgeHD.OriginalSegment.Should().Be(segmentH);
 
-            halfEdgeHC.Next.Should().Be(halfEdgeCB);
+            halfEdgeHC.Next.Should().Be(halfEdgeCD);
             halfEdgeHC.Twin.Should().Be(halfEdgeCH);
-            halfEdgeHC.Previous.Should().Be(halfEdgeGH);
+            halfEdgeHC.Previous.Should().Be(halfEdgeDH);
             halfEdgeHC.OriginalSegment.Should().Be(segmentI);
 
-            halfEdgeCH.Next.Should().Be(halfEdgeHD);
+            halfEdgeCH.Next.Should().Be(halfEdgeHG);
             halfEdgeCH.Twin.Should().Be(halfEdgeHC);
-            halfEdgeCH.Previous.Should().Be(halfEdgeDC);
+            halfEdgeCH.Previous.Should().Be(halfEdgeBC);
             halfEdgeCH.OriginalSegment.Should().Be(segmentI);
 
-            halfEdgeFD.Next.Should().Be(halfEdgeDH);
+            halfEdgeFD.Next.Should().Be(halfEdgeDE);
             halfEdgeFD.Twin.Should().Be(halfEdgeDF);
-            halfEdgeFD.Previous.Should().Be(halfEdgeHF);
+            halfEdgeFD.Previous.Should().Be(halfEdgeEF);
             halfEdgeFD.OriginalSegment.Should().Be(segmentJ);
 
-            halfEdgeDF.Next.Should().Be(halfEdgeFE);
+            halfEdgeDF.Next.Should().Be(halfEdgeFH);
             halfEdgeDF.Twin.Should().Be(halfEdgeFD);
-            halfEdgeDF.Previous.Should().Be(halfEdgeED);
+            halfEdgeDF.Previous.Should().Be(halfEdgeHD);
             halfEdgeDF.OriginalSegment.Should().Be(segmentJ);
 
-            halfEdgeHF.Next.Should().Be(halfEdgeFD);
+            halfEdgeHF.Next.Should().Be(halfEdgeFG);
             halfEdgeHF.Twin.Should().Be(halfEdgeFH);
-            halfEdgeHF.Previous.Should().Be(halfEdgeDH);
+            halfEdgeHF.Previous.Should().Be(halfEdgeGH);
             halfEdgeHF.OriginalSegment.Should().Be(segmentK);
 
-            halfEdgeFH.Next.Should().Be(halfEdgeHG);
+            halfEdgeFH.Next.Should().Be(halfEdgeHD);
             halfEdgeFH.Twin.Should().Be(halfEdgeHF);
-            halfEdgeFH.Previous.Should().Be(halfEdgeGF);
+            halfEdgeFH.Previous.Should().Be(halfEdgeDF);
             halfEdgeFH.OriginalSegment.Should().Be(segmentK);
 
             halfEdgeGA.Next.Should().Be(halfEdgeAB);
             halfEdgeGA.Twin.Should().Be(halfEdgeAG);
-            halfEdgeGA.Previous.Should().Be(halfEdgeFG);
+            halfEdgeGA.Previous.Should().Be(halfEdgeHG);
             halfEdgeGA.OriginalSegment.Should().Be(segmentL);
 
-            halfEdgeAG.Next.Should().Be(halfEdgeGH);
+            halfEdgeAG.Next.Should().Be(halfEdgeGF);
             halfEdgeAG.Twin.Should().Be(halfEdgeGA);
             halfEdgeAG.Previous.Should().Be(halfEdgeBA);
             halfEdgeAG.OriginalSegment.Should().Be(segmentL);
@@ -815,35 +815,35 @@ namespace Ethereality.DoublyConnectedEdgeList.Tests
             var face5 = result.Faces[4];
             var face6 = result.Faces[5];
 
-            face1.HalfEdges.Should().HaveCount(7);
+            face1.HalfEdges.Should().HaveCount(5);
             face1.HalfEdges.All(he => he.Face == face1).Should().BeTrue();
             face1.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeAB, halfEdgeBC, halfEdgeCD, halfEdgeDE, halfEdgeEF, halfEdgeFG, halfEdgeGA});
+                 .Contain(new[] {halfEdgeAB, halfEdgeBC, halfEdgeCH, halfEdgeHG, halfEdgeGA});
 
-            face2.HalfEdges.Should().HaveCount(5);
+            face2.HalfEdges.Should().HaveCount(7);
             face2.HalfEdges.All(he => he.Face == face2).Should().BeTrue();
             face2.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeAG, halfEdgeGH, halfEdgeHC, halfEdgeCB, halfEdgeBA});
+                 .Contain(new[] {halfEdgeBA, halfEdgeCB, halfEdgeDC, halfEdgeED, halfEdgeFE, halfEdgeGF, halfEdgeAG});
 
             face3.HalfEdges.Should().HaveCount(3);
             face3.HalfEdges.All(he => he.Face == face3).Should().BeTrue();
             face3.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeCH, halfEdgeHD, halfEdgeDC});
+                 .Contain(new[] {halfEdgeHC, halfEdgeCD, halfEdgeDH});
 
             face4.HalfEdges.Should().HaveCount(3);
             face4.HalfEdges.All(he => he.Face == face4).Should().BeTrue();
             face4.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeFE, halfEdgeED, halfEdgeDF});
+                 .Contain(new[] {halfEdgeFD, halfEdgeDE, halfEdgeEF});
 
             face6.HalfEdges.Should().HaveCount(3);
             face6.HalfEdges.All(he => he.Face == face6).Should().BeTrue();
             face6.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeFD, halfEdgeDH, halfEdgeHF});
+                 .Contain(new[] {halfEdgeHD, halfEdgeDF, halfEdgeFH});
 
             face5.HalfEdges.Should().HaveCount(3);
             face5.HalfEdges.All(he => he.Face == face5).Should().BeTrue();
             face5.HalfEdges.Should()
-                 .Contain(new[] {halfEdgeHG, halfEdgeGF, halfEdgeFH});
+                 .Contain(new[] {halfEdgeGH, halfEdgeHF, halfEdgeFG});
         }
 
         [Fact]
